@@ -1,37 +1,17 @@
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import HomeScreen from './screens/HomeScreen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Menu from './components/Menu';
 import PlaceScreen from './screens/PlaceScreen';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import GlobalContext from './context/index';
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+import { PlacesContextProvider } from './context/PlacesContext';
+import MainScreen from './screens/MainScreen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import 'react-native-gesture-handler';
+import DrawerCustom from './components/DrawerCustom';
 
-function Home() {
-
-  return (
-    <GlobalContext>
-    <Tab.Navigator
-      tabBar={() => <Menu />}
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: '#fff',
-        },
-      }}
-    >
-      <Tab.Screen name="HomeScreen" component={HomeScreen} />      
-    </Tab.Navigator>
-    </GlobalContext>
-  )
-
-}
+const Drawer = createDrawerNavigator();
 
 export default function App() {
-
   const MyTheme = {
     ...DefaultTheme,
     colors: {
@@ -39,28 +19,42 @@ export default function App() {
       background: '#fff',
     },
   };
-  
+
   return (
     <SafeAreaView style={styles.safeArea}>
-      <NavigationContainer theme={MyTheme}>
-        
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              headerShown: false,              
+      <PlacesContextProvider>
+        <NavigationContainer theme={MyTheme}>
+          <Drawer.Navigator
+            drawerContent={(props) => <DrawerCustom {...props} />}
+            screenOptions={{
+              drawerPosition: 'right',
             }}
-          />
-          <Stack.Screen
-            name="Place"
-            component={PlaceScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+            initialRouteName="Main"
+          >
+            <Drawer.Screen
+              name="Main"
+              component={MainScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Drawer.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Drawer.Screen
+              name="Place"
+              component={PlaceScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </PlacesContextProvider>
     </SafeAreaView>
   );
 }
@@ -68,5 +62,5 @@ export default function App() {
 const styles = StyleSheet.create({
   safeArea: {
     height: '100%',
-  },  
+  },
 });
