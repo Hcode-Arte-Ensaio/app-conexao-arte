@@ -1,8 +1,9 @@
 {
   "expo": {
     "name": "Conecte-se - Mobile Developer",
-    "slug": "conectese-mobile-developer",
-    "version": "1.0.0",
+    "owner": "arte-ensaio",
+    "slug": "conectese-mo-rio-developer",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -16,7 +17,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.arteensaio.conectese"
+      "bundleIdentifier": "com.arteensaio.mo.rio.conectese"
     },
     "android": {
       "adaptiveIcon": {
