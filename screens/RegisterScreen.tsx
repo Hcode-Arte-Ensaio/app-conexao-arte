@@ -24,7 +24,7 @@ const [value, setValue] = React.useState({
 
 try {
     await createUserWithEmailAndPassword(auth, value.email, value.password);
-    navigation.navigate('Sign In');
+    navigation.navigate('conexao-arte');
   } catch (error:any) {
     setValue({
       ...value,
