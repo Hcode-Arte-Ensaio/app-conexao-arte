@@ -1,19 +1,120 @@
-import React, { useEffect, useState } from 'react';
-import {
-  ImageBackground,
-  ImageSourcePropType,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from 'react-native';
-import BackIcon from '../components/Icons/BackIcon';
-import FavoriteIcon from '../components/Icons/FavoriteIcon';
-import ForwardIcon from '../components/Icons/ForwardIcon';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Dimensions, ImageSourcePropType, Platform } from 'react-native';
 import placeImages from '../consts/placeImages';
 import { usePlaces } from '../context/PlacesContext';
 import { IPlace } from '../interfaces/IPlace';
+import styled from 'styled-components/native';
+import { StatusBar } from 'expo-status-bar';
+import { MaterialIcons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+
+const Wrap = styled.View`
+  position: relative;
+  flex: 1;
+`;
+
+const WrapScrollView = styled.ScrollView``;
+
+const CoverWrap = styled.View`
+  height: ${Dimensions.get('window').height / 3}px;
+  width: 100%;
+  position: relative;
+`;
+const Cover = styled.Image`
+  position: absolute;
+  height: ${Dimensions.get('window').height / 3}px;
+  width: 100%;
+`;
+
+const Title = styled.Text`
+  font-size: 32px;
+  padding: 15px;
+`;
+
+const Description = styled.Text`
+  font-size: 14px;
+  padding: 0 15px;
+  text-align: justify;
+`;
+
+const Gallery = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-top: 15px;
+  margin-bottom: 110px;
+`;
+
+const GalleryItem = styled.TouchableOpacity`
+  width: ${Dimensions.get('window').width / 3}px;
+  height: ${Dimensions.get('window').width / 3}px;
+`;
+
+const GalleryImage = styled.Image`
+  width: ${Dimensions.get('window').width / 3}px;
+  height: ${Dimensions.get('window').width / 3}px;
+`;
+
+const Toolbar = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding: 15px;
+`;
+
+const Button = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 32px;
+`;
+
+const AddPhotoButton = styled.TouchableOpacity`
+  position: absolute;
+  bottom: 15px;
+  left: ${Dimensions.get('window').width / 2 - 38}px;
+  background-color: #2ecc71cc;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  border-radius: 48px;
+`;
+
+const ClosePhotoButton = styled.TouchableOpacity`
+  position: absolute;
+  bottom: 15px;
+  left: ${Dimensions.get('window').width / 2 - 38}px;
+  background-color: #e74c3ccc;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  border-radius: 48px;
+`;
+
+const Modal = styled.View`
+  background-color: #000000cc;
+  flex: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: ${Dimensions.get('window').width}px;
+  height: ${Dimensions.get('window').height}px;
+  padding-bottom: 100px;
+`;
+
+const ModalButton = styled.TouchableOpacity`
+  flex: 1;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalButtonText = styled.Text`
+  color: #fff;
+  font-size: 24px;
+`;
 
 const PlaceScreen = ({
   route,
@@ -24,181 +125,139 @@ const PlaceScreen = ({
   };
   navigation: any;
 }) => {
+  const [modal, setModal] = useState(false);
   const [place, setPlace] = useState(route.params);
   const { toggleFavorites } = usePlaces();
 
   const img = placeImages.find((item) => item.id === place.id)
     ?.image as ImageSourcePropType;
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      console.log(result.uri);
+    }
+  };
+
+  const pickCamera = async () => {
+    console.log('pickCamera');
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      console.log(result.uri);
+    }
+  };
+
+  const checkPermissions = async () => {
+    if (Platform.OS !== 'web') {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+      }
+    }
+  };
+
   useEffect(() => {
     setPlace(route.params);
+    checkPermissions();
   }, [route]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.background}>
-        <ImageBackground
-          source={img}
-          style={styles.backgroundImage}
-          imageStyle={styles.backgroundBorder}
-        >
-          <View style={styles.linksContainer}>
-            <TouchableHighlight
-              style={styles.iconContainer}
-              onPress={() => navigation.navigate('Home')}
-            >
-              <BackIcon />
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.iconContainer}
-              underlayColor={'#eee'}
+    <Wrap>
+      <WrapScrollView>
+        <StatusBar backgroundColor="#00000066" style="light" />
+        <CoverWrap>
+          <Cover source={img} />
+          <Toolbar>
+            <Button onPress={() => navigation.navigate('Home')}>
+              <MaterialIcons name="arrow-back-ios" size={24} color="black" />
+            </Button>
+            <Button
               onPress={() => {
-                setPlace((place) => ({
-                  ...place,
-                  favorite: !place.favorite,
-                }));
                 toggleFavorites(place);
+                place.favorite = !place.favorite;
               }}
             >
-              <FavoriteIcon
-                width="24"
-                height="24"
-                color={place.favorite ? '#ff0000' : '#6C6C6C'}
-              />
-            </TouchableHighlight>
-          </View>
-        </ImageBackground>
-      </View>
-      <View style={styles.textContainer}>
-        <View style={styles.place}>
-          <Text style={styles.placeName}>{place.name}</Text>
-          <Text style={styles.placeTicket}>{place.ticket}</Text>
-        </View>
-        <View style={styles.placeDescription}>
-          <Text style={styles.description}>{place.description}</Text>
-          <View style={styles.address}>
-          <Text style={styles.addressText}>{place.address}</Text>
-          </View>
-        </View>
-        <TouchableHighlight
-          style={styles.button}
-          onPress={() => Linking.openURL(place.site)}
-        >
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Visite {place.name}</Text>
-            <ForwardIcon />
-          </View>
-        </TouchableHighlight>
-      </View>
-    </View>
+              {!place.favorite ? (
+                <MaterialIcons name="favorite-border" size={24} color="black" />
+              ) : (
+                <MaterialIcons name="favorite" size={24} color="red" />
+              )}
+            </Button>
+          </Toolbar>
+        </CoverWrap>
+        <Title>{place.name}</Title>
+        <Description>{place.description}</Description>
+        <Gallery>
+          <GalleryItem>
+            <GalleryImage source={img} />
+          </GalleryItem>
+          <GalleryItem>
+            <GalleryImage source={img} />
+          </GalleryItem>
+          <GalleryItem>
+            <GalleryImage source={img} />
+          </GalleryItem>
+          <GalleryItem>
+            <GalleryImage source={img} />
+          </GalleryItem>
+          <GalleryItem>
+            <GalleryImage source={img} />
+          </GalleryItem>
+        </Gallery>
+      </WrapScrollView>
+      {modal && (
+        <Fragment>
+          <Modal>
+            <ModalButton onPress={() => setModal(false)}>
+              <MaterialIcons name="camera-alt" size={64} color="white" />
+              <ModalButtonText>Câmera</ModalButtonText>
+            </ModalButton>
+            <ModalButton
+              onPress={() => {
+                pickImage();
+                setModal(false);
+              }}
+            >
+              <MaterialIcons name="image" size={64} color="white" />
+              <ModalButtonText>Galeria</ModalButtonText>
+            </ModalButton>
+          </Modal>
+          <ClosePhotoButton
+            onPress={() => {
+              pickCamera();
+              setModal(false);
+            }}
+          >
+            <MaterialIcons name="close" size={32} color="white" />
+          </ClosePhotoButton>
+        </Fragment>
+      )}
+      {!modal && (
+        <AddPhotoButton onPress={() => setModal(true)}>
+          <MaterialIcons name="add-a-photo" size={32} color="white" />
+        </AddPhotoButton>
+      )}
+    </Wrap>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 40,
-    paddingBottom: 80,
-    paddingHorizontal: 30,
-    backgroundColor: '#424141',
-    flex: 1,
-    color: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-  },
-  background: {
-    width: '100%',
-  },
-  backgroundImage: {
-    width: '100%',
-    height: 400,
-  },
-  backgroundBorder: {
-    borderRadius: 40,
-  },
-  linksContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textContainer: {
-    paddingHorizontal: 10,
-    width: '100%',
-    justifyContent: 'space-between',
-  },
-  place: {
-    width: '100%',
-    height: 60,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  placeName: {
-    width: '100%',
-    fontSize: 18,
-    fontWeight: '600',
-    maxWidth: 300,
-    color: '#fff',
-  },
-  placeTicket: {
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  placeDescription: {
-    color: '#fff',
-    width: '105%',
-    // borderWidth: 4,
-    // borderColor: '#B8EA78',
-    // paddingHorizontal: 20,
-    height: 270,
-    justifyContent: 'flex-start',
-    marginBottom: '2%',
-    marginTop: '2%',
-  },
-  description: {
-    fontSize: 13,
-    fontWeight: '200',
-    maxWidth: 320,
-    color: '#e9e9e9',
-  },
-  address: {
-    width: '90%',
-    height: 100,
-    marginTop: 20,
-    
-  },
-  addressText: {
-    color: 'white',
-  },
-  button: {
-    width: '100%',
-    // borderWidth: 4,
-    // borderColor: '#AA78EA',
-    height: 50,
-    borderRadius: 40,
-    backgroundColor: '#2F2F2F',
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-    height: 24,
-  },
-});
 
 export default PlaceScreen;

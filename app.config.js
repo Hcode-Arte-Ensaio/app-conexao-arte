@@ -37,5 +37,14 @@ export default {
       firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppId: process.env.FIREBASE_APP_ID,
     },
+    plugins: [
+      [
+        'expo-image-picker',
+        {
+          photosPermission:
+            'Este aplicativo precisa de permissão para acessar sua biblioteca de fotos ou câmera para adicionar fotos dos lugares turísticos que você visitou.',
+        },
+      ],
+    ],
   },
 };
