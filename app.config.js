@@ -1,34 +1,33 @@
-import "dotenv/config";
+import 'dotenv/config';
 
 export default {
   expo: {
-    name: "Conexão Arte - SP",
-    owner: "arte-ensaio",
-    slug: "conexao-arte-sp",
-    version: "2.2.1",
-    orientation: "portrait",
-    icon: "./assets/images/icon.png",
+    name: 'Conexão Arte - SP',
+    slug: 'conexao-arte-sp',
+    version: '2.2.1',
+    orientation: 'portrait',
+    icon: './assets/images/icon.png',
     splash: {
-      image: "./assets/images/splash.png",
-      resizeMode: "contain",
-      backgroundColor: "#ffffff",
+      image: './assets/images/splash.png',
+      resizeMode: 'contain',
+      backgroundColor: '#ffffff',
     },
     updates: {
       fallbackToCacheTimeout: 0,
     },
-    assetBundlePatterns: ["**/*"],
+    assetBundlePatterns: ['**/*'],
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.arteensaio.sp.conexaoarte",
+      bundleIdentifier: 'com.arteensaio.sp.conexaoarte',
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: "./assets/images/adaptive-icon.png",
-        backgroundColor: "#FFFFFF",
+        foregroundImage: './assets/images/adaptive-icon.png',
+        backgroundColor: '#FFFFFF',
       },
     },
     web: {
-      favicon: "./assets/images/favicon.png",
+      favicon: './assets/images/favicon.png',
     },
     extra: {
       firebaseApiKey: process.env.FIREBASE_API_KEY,
