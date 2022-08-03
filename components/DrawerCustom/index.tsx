@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/drawer';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { Image, StyleSheet, TouchableHighlight } from 'react-native';
-import logo from '../../assets/conectese-blue.png';
+import logo from '../../assets/conexao-cor.png';
 import { View } from 'react-native';
 import { Dimensions } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';

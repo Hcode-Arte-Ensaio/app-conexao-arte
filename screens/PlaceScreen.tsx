@@ -76,13 +76,16 @@ const PlaceScreen = ({
         </View>
         <View style={styles.placeDescription}>
           <Text style={styles.description}>{place.description}</Text>
+          <View style={styles.address}>
+          <Text style={styles.addressText}>{place.address}</Text>
+          </View>
         </View>
         <TouchableHighlight
           style={styles.button}
           onPress={() => Linking.openURL(place.site)}
         >
           <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Visite o Rio</Text>
+            <Text style={styles.buttonText}>Visite {place.name}</Text>
             <ForwardIcon />
           </View>
         </TouchableHighlight>
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 80,
     paddingHorizontal: 30,
-    backgroundColor: '#325693',
+    backgroundColor: '#424141',
     flex: 1,
     color: '#fff',
     alignItems: 'flex-start',
@@ -165,6 +168,15 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     maxWidth: 320,
     color: '#e9e9e9',
+  },
+  address: {
+    width: '90%',
+    height: 100,
+    marginTop: 20,
+    
+  },
+  addressText: {
+    color: 'white',
   },
   button: {
     width: '100%',

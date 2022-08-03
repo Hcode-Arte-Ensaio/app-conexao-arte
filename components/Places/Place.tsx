@@ -59,7 +59,7 @@ const Place = ({ place }: { place: IPlace }) => {
           </View>
           <View style={styles.locationContainer}>
             <PlaceIcon />
-            <Text style={styles.placeLocation}>Rio de Janeiro</Text>
+            <Text style={styles.placeLocation}>{data.address}</Text>
           </View>
         </View>
       </View>
@@ -106,6 +106,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   placeLocation: {
+    width: '90%',
+    height: 10,
+    overflow: 'hidden',
     fontSize: 10,
     color: '#BCBCBC',
   },

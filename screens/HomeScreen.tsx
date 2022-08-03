@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { Image, ImageSourcePropType, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -11,28 +11,29 @@ import { usePlaces } from '../context/PlacesContext';
 import { IPlace } from '../interfaces/IPlace';
 
 
-
+const getRandom = (min, max)=> {
+  return parseInt(Math.random() * (max - min) + min);
+}
 const HomeScreen = ({ navigation}) => {
   const { places, placesFavorites } = usePlaces();
+  const [placeLocal, setPlaceLocal] = useState<IPlace>();
+const [destak, setDestak] = useState<Number>(0);
+  
+ useEffect(()=>{
 
-
-  const destak = parseInt(Math.random() * (20 - 1) + 1);
-  const img = placeImages.find((item) => item.id === destak)
+ setDestak(getRandom(2,10));
+ setPlaceLocal(places.find((item) => Number(item.id) === Number(destak)))
+},[destak]);
+  const img = placeImages.find((item) => Number(item.id) === Number(destak))
     ?.image as ImageSourcePropType;
 
-    const data = places.find((item) => item.id === destak);
+    const data = places.find((item) => Number(item.id) === Number(destak));
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableHighlight
-            style={styles.menu}
-            onPress={() => navigation.toggleDrawer()}
-            underlayColor={'rgba(255,255,255,.1)'}
-          >
-            <MaterialIcons name="menu" size={32} color={'#000000'} />
-          </TouchableHighlight>
+
         </View>
         <View style={styles.title}>
           <TitleHome title="Descubra" subtitle="lugares incríveis" />
@@ -41,7 +42,7 @@ const HomeScreen = ({ navigation}) => {
           <Search />
         </View>
 
-  {places &&      <View style={styles.destakPlaces}>
+  {destak ?      <View style={styles.destakPlaces}>
                       <TouchableHighlight
       style={styles.container}
       onPress={() => navigation.navigate('Place' as never, data as never)}
@@ -53,10 +54,10 @@ const HomeScreen = ({ navigation}) => {
             resizeMethod="resize"
             resizeMode="cover"
           />
-          {places[destak-1] &&<Text style={h1}>{places[destak]?.name}</Text>}
+         {destak ? <Text style={h1}>{placeLocal?.name}</Text>:null}
           </View>
         </TouchableHighlight>
-        </View>}
+        </View>:null}
 
         <View style={styles.places}>
           <Places title="Locais populares" data={places} />

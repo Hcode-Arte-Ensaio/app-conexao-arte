@@ -8,12 +8,13 @@ import {
   View,
 } from 'react-native';
 import FadeCarousel from 'rn-fade-carousel';
-import Image1 from '../assets/main/rio1.jpg';
-import Image2 from '../assets/main/rio2.jpg';
-import Image3 from '../assets/main/rio3.jpg';
-import Image4 from '../assets/main/rio4.jpg';
-import rioCultura from '../assets/rio-cultura.png';
-import conectese from '../assets/conectese.png';
+import Image1 from '../assets/main/sp1.jpg';
+import Image2 from '../assets/main/sp2.jpg';
+import Image3 from '../assets/main/sp3.jpg';
+import Image4 from '../assets/main/sp4.jpg';
+import Image5 from '../assets/main/sp5.jpg';
+import spCultura from '../assets/sp-cultura.png';
+import conexao from '../assets/conexao.png';
 import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -61,6 +62,12 @@ const MainScreen = ({ navigation }) => {
             resizeMethod="resize"
             resizeMode="cover"
           />,
+          <Image
+            source={Image5}
+            style={styles.imageScroll}
+            resizeMethod="resize"
+            resizeMode="cover"
+          />,
         ]}
         containerStyle={styles.carouselContainer}
         fadeDuration={2000}
@@ -69,29 +76,24 @@ const MainScreen = ({ navigation }) => {
       />
       <View style={styles.innerContainer}>
         <StatusBar barStyle={'light-content'} />
-        <TouchableHighlight
-          style={styles.menu}
-          onPress={() => navigation.toggleDrawer()}
-          underlayColor={'rgba(255,255,255,.1)'}
-        >
-          <MaterialIcons name="menu" size={32} color={'#ffffff'} />
-        </TouchableHighlight>
-        <LogoWrap>
-          <Image source={rioCultura} />
+        
+        <LogoWrap style={styles.logoWrap}>
+          <Image source={spCultura}  style={styles.logo}
+            resizeMode="contain" />
         </LogoWrap>
         <Text style={styles.text}>
-          Prefeitura do Rio de Janeiro e Secretaria Municipal de Cultura
+          Realização da Secretaria Municipal de Cultura de São Paulo via PROMAC
         </Text>
         <Text style={styles.text}>Apresentam:</Text>
-        <ImageWrap>
-          <Image source={conectese} />
+        <ImageWrap  style={styles.logoConexaoWrap}>
+          <Image source={conexao} style={styles.logoConexao} resizeMode="contain" />
         </ImageWrap>
         <TouchableHighlight
           style={styles.button}
           onPress={() => navigation.navigate('Home')}
           underlayColor={'rgba(255,255,255,.25)'}
         >
-          <Text style={styles.buttonText}>Descubra o Rio</Text>
+          <Text style={styles.buttonText}>Conheça SAMPA</Text>
         </TouchableHighlight>
       </View>
     </SafeAreaView>
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     position: 'absolute',
+    borderWidth:2,
     bottom: 0,
     top: 0,
     left: 0,
@@ -157,6 +160,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  logo:{
+    width: '100%',
+    margin:0,
+    height: 100,
+    alignItems: 'flex-start',
+  },
+  logoWrap:{
+    width: '90%',
+    height: 100,
+  },
+  logoConexaoWrap:{
+    width: '90%',
+    height: 100,
+  },
+  logoConexao:{
+    width: '100%',
+    height: 90,
+  }
 });
 
 export default MainScreen;

@@ -58,84 +58,104 @@ interface ImageProps {
 const placeImages: ImageProps[] = [
   {
     id: 1,
-    image: require("../assets/images/gallery/bondinho_pao_acucar.jpg"),
+    image: require("../assets/images/gallery/beco_do_batman.jpg"),
   },
   {
     id: 2,
-    image: require("../assets/images/gallery/museu_do_amanha.jpg"),
+    image: require("../assets/images/gallery/ccj_ruth_cardoso.jpg"),
   },
   {
     id: 3,
-    image: require("../assets/images/gallery/cristo_redentor.jpg"),
+    image: require("../assets/images/gallery/cc_grajau.jpg"),
   },
   {
     id: 4,
-    image: require("../assets/images/gallery/praia_copacabana.jpg"),
+    image: require("../assets/images/gallery/casarao_vila_guilherme.jpg"),
   },
   {
     id: 5,
-    image: require("../assets/images/gallery/maracana.jpg"),
+    image: require("../assets/images/gallery/cc_julio_guerra.jpg"),
   },
   {
     id: 6,
-    image: require("../assets/images/gallery/parque_lage.jpg"),
+    image: require("../assets/images/gallery/museu_do_ipiranga.jpg"),
   },
   {
     id: 7,
-    image: require("../assets/images/gallery/galeria_ipanema.jpg"),
+    image: require("../assets/images/gallery/theatro_municipal_sp.jpg"),
   },
   {
     id: 8,
-    image: require("../assets/images/gallery/parque_das_ruinas.jpg"),
+    image: require("../assets/images/gallery/masp.jpg"),
   },
   {
     id: 9,
-    image: require("../assets/images/gallery/estadio_nilton_santos.jpg"),
+    image: require("../assets/images/gallery/mam.jpg"),
   },
   {
     id: 10,
-    image: require("../assets/images/gallery/estadio_laranjeiras.jpg"),
+    image: require("../assets/images/gallery/autodromo_de_interlagos.jpg"),
   },
   {
     id: 11,
-    image: require("../assets/images/gallery/feira_sao_cristovao.jpg"),
+    image: require("../assets/images/gallery/avenida_paulista.jpg"),
   },
   {
     id: 12,
-    image: require("../assets/images/gallery/jardim_botanico.jpg"),
+    image: require("../assets/images/gallery/casa_da_cidade_tatuape.jpg"),
   },
   {
     id: 13,
-    image: require("../assets/images/gallery/aquario.jpg"),
+    image: require("../assets/images/gallery/jardim_botanico.jpg"),
   },
   {
     id: 14,
-    image: require("../assets/images/gallery/museu_arte_rio_mar.jpg"),
+    image: require("../assets/images/gallery/instituto_tomie_ohtake.jpg"),
   },
 
   {
     id: 15,
-    image: require("../assets/images/gallery/theatro_municipal_rio.jpg"),
+    image: require("../assets/images/gallery/instituto_moreira_salles.jpg"),
   },
   {
     id: 16,
-    image: require("../assets/images/gallery/orla_conde.jpg"),
+    image: require("../assets/images/gallery/museu_do_futebol.jpg"),
   },
   {
     id: 17,
-    image: require("../assets/images/gallery/arcos_da_lapa.jpg"),
+    image: require("../assets/images/gallery/parque_ibirapuera.jpg"),
   },
   {
     id: 18,
-    image: require("../assets/images/gallery/igreja_candelaria.jpg"),
+    image: require("../assets/images/gallery/patio_do_colegio.jpg"),
   },
   {
     id: 19,
-    image: require("../assets/images/gallery/mureta_da_urca.jpg"),
+    image: require("../assets/images/gallery/pinacoteca.jpg"),
   },
   {
     id: 20,
-    image: require("../assets/images/gallery/real_gabinete_portugues_de_leitura.jpg"),
+    image: require("../assets/images/gallery/museu_da_lingua_portuguesa.jpg"),
+  },
+  {
+    id: 21,
+    image: require("../assets/images/gallery/centro_cultural_banco_do_brasil.jpg"),
+  },
+  {
+    id: 22,
+    image: require("../assets/images/gallery/feira_benedito_calixto.jpg"),
+  },
+  {
+    id: 23,
+    image: require("../assets/images/gallery/mercado_municipal.jpg"),
+  },
+  {
+    id: 24,
+    image: require("../assets/images/gallery/mis.jpg"),
+  },
+  {
+    id: 25,
+    image: require("../assets/images/gallery/museu_da_casa_brasileira.jpg"),
   },
 ];
 
