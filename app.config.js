@@ -21,6 +21,8 @@ export default {
       bundleIdentifier: 'com.arteensaio.sp.conexaoarte',
     },
     android: {
+      blockedPermissions: [],
+      package: 'com.arteensaio.sp.conexaoarte',
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
@@ -42,7 +44,7 @@ export default {
         'expo-image-picker',
         {
           photosPermission:
-            'Este aplicativo precisa de permissão para acessar sua biblioteca de fotos ou câmera para adicionar fotos dos lugares turísticos que você visitou.',
+            'The app accesses your photos to let you share them with your friends.',
         },
       ],
     ],
