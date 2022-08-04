@@ -8,6 +8,7 @@ import MainScreen from '../screens/MainScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 import DrawerCustom from '../components/DrawerCustom';
+import { PlacePhotoScreen } from '../screens/PlacePhotoScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -51,6 +52,11 @@ export default function App() {
               options={{
                 headerShown: false,
               }}
+            />
+            <Drawer.Screen
+              name="PlacePhoto"
+              component={PlacePhotoScreen}
+              options={{ presentation: 'modal', headerShown: false }}
             />
           </Drawer.Navigator>
         </NavigationContainer>
