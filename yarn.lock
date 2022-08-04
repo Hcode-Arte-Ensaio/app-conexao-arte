@@ -6616,6 +6616,18 @@
     "invariant" "^2.2.4"
     "prop-types" "^15.7.2"
 
+"react-native-image-pan-zoom@^2.1.12":
+  "integrity" "sha512-BF66XeP6dzuANsPmmFsJshM2Jyh/Mo1t8FsGc1L9Q9/sVP8MJULDabB1hms+eAoqgtyhMr5BuXV3E1hJ5U5H6Q=="
+  "resolved" "https://registry.npmjs.org/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.1.12.tgz"
+  "version" "2.1.12"
+
+"react-native-image-zoom-viewer@^3.0.1":
+  "integrity" "sha512-la6s5DNSuq4GCRLsi5CZ29FPjgTpdCuGIRdO5T9rUrAtxrlpBPhhSnHrbmPVxsdtOUvxHacTh2Gfa9+RraMZQA=="
+  "resolved" "https://registry.npmjs.org/react-native-image-zoom-viewer/-/react-native-image-zoom-viewer-3.0.1.tgz"
+  "version" "3.0.1"
+  dependencies:
+    "react-native-image-pan-zoom" "^2.1.12"
+
 "react-native-ratings@8.0.4":
   "integrity" "sha512-Xczu5lskIIRD6BEdz9A0jDRpEck/SFxRqiglkXi0u67yAtI1/pcJC76P4MukCbT8K4BPVl+42w83YqXBoBRl7A=="
   "resolved" "https://registry.npmjs.org/react-native-ratings/-/react-native-ratings-8.0.4.tgz"

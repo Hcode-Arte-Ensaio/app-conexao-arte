@@ -323,12 +323,17 @@ const PlaceScreen = ({
         <Description>{place.description}</Description>
         <UserPohotosTitle>Fotos dos visitantes</UserPohotosTitle>
         <Gallery>
-          {photos.map(({ url }, index) => (
+          {photos.map((photo, index) => (
             <GalleryItem
               key={index}
-              onPress={() => navigation.navigate('PlacePhoto')}
+              onPress={() =>
+                navigation.navigate('PlacePhoto', {
+                  photo,
+                  place,
+                })
+              }
             >
-              <GalleryImage source={{ uri: url }} />
+              <GalleryImage source={{ uri: photo.url }} />
             </GalleryItem>
           ))}
         </Gallery>
