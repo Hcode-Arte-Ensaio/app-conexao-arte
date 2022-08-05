@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import "firebase/auth";
-import Constants from "expo-constants";
+import { initializeApp } from 'firebase/app';
+import 'firebase/auth';
+import Constants from 'expo-constants';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,6 +14,8 @@ const firebaseConfig = {
   messagingSenderId: Constants.manifest?.extra?.firebaseMessagingSenderId,
   appId: Constants.manifest?.extra?.firebaseAppId,
 };
+
+console.log({ firebaseConfig });
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
