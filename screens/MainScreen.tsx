@@ -74,17 +74,20 @@ const MainScreen = ({ navigation }) => {
         stillDuration={2000}
         start={true}
       />
+
       <View style={styles.innerContainer}>
-        <StatusBar barStyle={'light-content'} />
+        <View style={styles.textWrap}>
+        <Text style={styles.text}>
+          Realização da Secretaria Municipal de Cultura de São Paulo via PROMAC
+        </Text>
+        </View>
         
         <LogoWrap style={styles.logoWrap}>
           <Image source={spCultura}  style={styles.logo}
             resizeMode="contain" />
         </LogoWrap>
-        <Text style={styles.text}>
-          Realização da Secretaria Municipal de Cultura de São Paulo via PROMAC
-        </Text>
-        <Text style={styles.text}>Apresentam:</Text>
+        
+        
         <ImageWrap  style={styles.logoConexaoWrap}>
           <Image source={conexao} style={styles.logoConexao} resizeMode="contain" />
         </ImageWrap>
@@ -96,6 +99,7 @@ const MainScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Conheça SAMPA</Text>
         </TouchableHighlight>
       </View>
+        <StatusBar style='light' />
     </SafeAreaView>
   );
 };
@@ -112,10 +116,11 @@ const styles = StyleSheet.create({
   button: {
     height: 50,
     margin: 40,
-    borderColor: '#fff',
+    borderColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: 'rgba(255,255,255,0.2)',
     borderWidth: 1,
     borderStyle: 'solid',
-    borderRadius: 5,
+    borderRadius: 25,
     color: '#fff',
     padding: 10,
     alignItems: 'center',
@@ -126,22 +131,28 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   text: {
-    fontSize: 20,
-    marginLeft: 60,
-    marginRight: 60,
-    marginBottom: 10,
+    fontSize: 14,
+    marginLeft: 20,
+    marginRight: 20,
     color: 'rgba(255,255,255,0.75)',
     textAlign: 'center',
   },
+  textWrap: {
+    height:90,
+    marginTop: '0%',
+    paddingTop: '10%',
+    width: '100%',
+    backgroundColor: 'rgba(29,50,112,0.9)',
+    zIndex:10,
+    justifyContent: 'center',
+  },
   innerContainer: {
     position: 'absolute',
-    borderWidth:2,
     bottom: 0,
     top: 0,
     left: 0,
     right: 0,
     backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'space-between',
   },
   container: {
     alignItems: 'center',
@@ -171,8 +182,8 @@ const styles = StyleSheet.create({
     height: 100,
   },
   logoConexaoWrap:{
-    width: '90%',
-    height: 100,
+    width: '100%',
+    height: 50,
   },
   logoConexao:{
     width: '100%',
