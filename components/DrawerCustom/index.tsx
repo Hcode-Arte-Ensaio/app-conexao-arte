@@ -5,6 +5,7 @@ import logo from '../../assets/conexao-cor.png';
 import { View } from 'react-native';
 import { Dimensions } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { getAuth, signOut } from 'firebase/auth';
 
 const DrawerCustom = (props) => {
   const { navigation } = props;
@@ -30,8 +31,13 @@ const DrawerCustom = (props) => {
             onPress={() => navigation.navigate('Home' as never)}
             labelStyle={styles.item}
           />
+          <DrawerItem
+            label="Logout"
+            onPress={() => signOut(getAuth())}
+            labelStyle={styles.item}
+          />
         </View>
-        <Image source={logo} style={styles.logo} />
+        <Image source={logo} style={styles.logo} resizeMode="cover" />
       </View>
     </DrawerContentScrollView>
   );
@@ -52,6 +58,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: Dimensions.get('window').height - 50,
+    width: '100%',
   },
   menu: {
     flex: 1,
@@ -66,5 +73,6 @@ const styles = StyleSheet.create({
   logo: {
     marginBottom: 20,
     marginTop: 20,
+    width: '100%',
   },
 });
