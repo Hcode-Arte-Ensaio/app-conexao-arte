@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Image, ImageSourcePropType, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-
-const SignOutScreen = ({ navigation}) => {
-
+const SignOutScreen = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-
-      
         <StatusBar style="auto" />
       </View>
     </ScrollView>
@@ -51,8 +47,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingLeft: 10,
     paddingRight: 30,
-    paddingTop:10,
-    fontWeight: 'bold'
+    paddingTop: 10,
+    fontWeight: 'bold',
   },
   search: {
     width: '100%',
@@ -88,8 +84,5 @@ const styles = StyleSheet.create({
     flex: 4,
   },
 });
-const h1 = StyleSheet.flatten([
-    styles.titleDestak,
-    styles.text,    
-])
+StyleSheet.flatten([styles.titleDestak, styles.text]);
 export default SignOutScreen;

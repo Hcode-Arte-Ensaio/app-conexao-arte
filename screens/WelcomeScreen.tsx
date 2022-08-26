@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {   Image,
+import {
+  Image,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableHighlight,
-  View, } from 'react-native';
+  View,
+} from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import {  Input, Button } from 'react-native-elements';
+import { Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import FadeCarousel from 'rn-fade-carousel';
@@ -37,73 +39,66 @@ const ImageWrap = styled.View`
   width: 100%;
 `;
 
-const WelcomeScreen = ({ navigation}) => {
- const [value, setValue] = React.useState({
+const WelcomeScreen = ({ navigation }) => {
+  const [value, setValue] = React.useState({
     email: '',
     password: '',
-    error: ''
-  })
+    error: '',
+  });
 
   async function signIn() {
     if (value.email === '' || value.password === '') {
       setValue({
         ...value,
-        error: 'E-mail e Senha são obrigatórios'
-      })
+        error: 'E-mail e Senha são obrigatórios',
+      });
       return;
     }
 
     try {
       await signInWithEmailAndPassword(auth, value.email, value.password);
-    } catch (error:any) {
+    } catch (error: any) {
       setValue({
         ...value,
-        error: "Usuário ou Senha inválidos",
-      })
+        error: 'Usuário ou Senha inválidos',
+      });
     }
   }
 
   return (
     <SafeAreaView style={styles.container}>
-
-
-       
-
       <View style={styles.controls}>
         <Input
-          placeholder='Email'
+          placeholder="Email"
           containerStyle={styles.control}
           value={value.email}
           onChangeText={(text) => setValue({ ...value, email: text })}
-          leftIcon={<Icon
-            name='envelope'
-            size={16}
-          />}
+          leftIcon={<Icon name="envelope" size={16} />}
         />
 
         <Input
-          placeholder='Password'
+          placeholder="Password"
           containerStyle={styles.control}
           value={value.password}
           onChangeText={(text) => setValue({ ...value, password: text })}
           secureTextEntry={true}
-          leftIcon={<Icon
-            name='key'
-            size={16}
-          />}
+          leftIcon={<Icon name="key" size={16} />}
         />
 
         <Button title="Entrar" buttonStyle={styles.control} onPress={signIn} />
 
-        
-        <Button title="Cadastre-se" buttonStyle={styles.control} onPress={() => navigation.navigate('cadastre-se')} />
-          {!!value.error && <View style={styles.error}><Text>{value.error}</Text></View>}
+        <Button
+          title="Cadastre-se"
+          buttonStyle={styles.control}
+          onPress={() => navigation.navigate('cadastre-se')}
+        />
+        {!!value.error && (
+          <View style={styles.error}>
+            <Text>{value.error}</Text>
+          </View>
+        )}
       </View>
     </SafeAreaView>
-    
-
-   
- 
   );
 };
 
@@ -120,12 +115,12 @@ const styles = StyleSheet.create({
 
   controls: {
     width: '90%',
-    marginTop:'50%',
+    marginTop: '50%',
     flex: 1,
   },
 
   control: {
-    marginTop: 10
+    marginTop: 10,
   },
 
   error: {
@@ -136,7 +131,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: '#cde9fe',
   },
-   menu: {
+  menu: {
     position: 'absolute',
     top: 30,
     right: 20,
@@ -170,7 +165,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     position: 'absolute',
-    borderWidth:2,
+    borderWidth: 2,
     bottom: 0,
     top: 0,
     left: 0,
@@ -188,24 +183,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  logo:{
+  logo: {
     width: '100%',
-    margin:0,
+    margin: 0,
     height: 100,
     alignItems: 'flex-start',
   },
-  logoWrap:{
+  logoWrap: {
     width: '90%',
     height: 100,
   },
-  logoConexaoWrap:{
+  logoConexaoWrap: {
     width: '90%',
     height: 100,
   },
-  logoConexao:{
+  logoConexao: {
     width: '100%',
     height: 90,
-  }
+  },
 });
 
 export default WelcomeScreen;
