@@ -19,7 +19,6 @@ import {
   addDoc,
   getFirestore,
   onSnapshot,
-  doc,
   query,
   orderBy,
   limit,
@@ -196,7 +195,6 @@ const PlaceScreen = ({
         resolve(xhr.response as Blob);
       };
       xhr.onerror = function (e) {
-        console.log(e);
         reject(new TypeError('Network request failed'));
       };
       xhr.responseType = 'blob';
@@ -234,7 +232,6 @@ const PlaceScreen = ({
           });
         }
       } catch (e) {
-        console.log(e);
         alert('Upload failed, sorry :(');
       } finally {
         setUploading(false);
@@ -280,8 +277,6 @@ const PlaceScreen = ({
       querySnapshot.forEach((doc) => {
         items.push(doc.data());
       });
-
-      console.log('photos:', items.join(', '));
 
       setPhotos([...items]);
     });

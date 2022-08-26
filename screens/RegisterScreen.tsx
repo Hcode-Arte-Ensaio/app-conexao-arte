@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Button, Input } from 'react-native-elements';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { StackScreenProps } from '@react-navigation/stack';
+import styled from 'styled-components/native';
+
+const Input = styled.TextInput``;
+const Button = styled.TouchableOpacity``;
+
 const auth = getAuth();
 const RegisterScreen = ({ navigation }) => {
   const [value, setValue] = React.useState({
@@ -62,7 +63,6 @@ const RegisterScreen = ({ navigation }) => {
           containerStyle={styles.control}
           value={value.email}
           onChangeText={(text) => setValue({ ...value, email: text })}
-          leftIcon={<Icon name="envelope" size={16} />}
         />
 
         <Input
@@ -71,7 +71,6 @@ const RegisterScreen = ({ navigation }) => {
           value={value.password}
           onChangeText={(text) => setValue({ ...value, password: text })}
           secureTextEntry={true}
-          leftIcon={<Icon name="key" size={16} />}
         />
         <Input
           placeholder="Confirme a Senha"
@@ -79,7 +78,6 @@ const RegisterScreen = ({ navigation }) => {
           value={value.cpassword}
           onChangeText={(text) => setValue({ ...value, cpassword: text })}
           secureTextEntry={true}
-          leftIcon={<Icon name="key" size={16} />}
         />
 
         <Button

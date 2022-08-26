@@ -31,7 +31,7 @@ const DEFAULT_VALUE = {
 
 const PlacesContext = React.createContext<PropsPlacesContext>(DEFAULT_VALUE);
 
-export const PlacesContextProvider: React.FC = ({ children }) => {
+export const PlacesContextProvider = ({ children }) => {
   const [filter, setFilter] = useState('');
   const [categoryId, setCategoryId] = useState(0);
   const [allPlaces, setAllPlaces] = useState<IPlace[]>([]);
@@ -108,7 +108,6 @@ export const PlacesContextProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    
     if (filter) {
       setPlaces((items) => items.filter(filterFunction));
       setPlacesFavorites((items) => items.filter(filterFunction));

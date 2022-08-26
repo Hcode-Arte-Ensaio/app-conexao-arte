@@ -46,8 +46,6 @@ export default {
         {
           photosPermission: 'custom photos permission',
           cameraPermission: 'Allow $(PRODUCT_NAME) to open the camera',
-
-          '//': 'Disables the microphone permission',
           microphonePermission: false,
         },
       ],

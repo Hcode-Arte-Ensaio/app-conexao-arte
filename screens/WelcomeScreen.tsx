@@ -1,52 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Image,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { Input, Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, { useCallback, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import FadeCarousel from 'rn-fade-carousel';
-import Image1 from '../assets/main/sp1.jpg';
-import Image2 from '../assets/main/sp2.jpg';
-import Image3 from '../assets/main/sp3.jpg';
-import Image4 from '../assets/main/sp4.jpg';
-import Image5 from '../assets/main/sp5.jpg';
-import spCultura from '../assets/sp-cultura.png';
-import conexao from '../assets/conexao.png';
 import styled from 'styled-components/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
+const Input = styled.TextInput``;
+const Button = styled.TouchableOpacity``;
 
 const auth = getAuth();
 
-const LogoWrap = styled.View`
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-top: 100px;
-  margin-bottom: 40px;
-`;
-
-const ImageWrap = styled.View`
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;
-
 const WelcomeScreen = ({ navigation }) => {
-  const [value, setValue] = React.useState({
+  const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState({
     email: '',
     password: '',
     error: '',
   });
 
-  async function signIn() {
+  const signIn = useCallback(async () => {
     if (value.email === '' || value.password === '') {
       setValue({
         ...value,
@@ -55,50 +25,52 @@ const WelcomeScreen = ({ navigation }) => {
       return;
     }
 
+    setLoading(true);
+
     try {
       await signInWithEmailAndPassword(auth, value.email, value.password);
     } catch (error: any) {
+      setLoading(false);
       setValue({
         ...value,
         error: 'Usuário ou Senha inválidos',
       });
     }
-  }
+  }, [value]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.controls}>
-        <Input
-          placeholder="Email"
-          containerStyle={styles.control}
-          value={value.email}
-          onChangeText={(text) => setValue({ ...value, email: text })}
-          leftIcon={<Icon name="envelope" size={16} />}
-        />
+    <View style={styles.controls}>
+      <Input
+        placeholder="Email"
+        containerStyle={styles.control}
+        value={value.email}
+        onChangeText={(text) => setValue({ ...value, email: text })}
+      />
 
-        <Input
-          placeholder="Password"
-          containerStyle={styles.control}
-          value={value.password}
-          onChangeText={(text) => setValue({ ...value, password: text })}
-          secureTextEntry={true}
-          leftIcon={<Icon name="key" size={16} />}
-        />
+      <Input
+        placeholder="Password"
+        containerStyle={styles.control}
+        value={value.password}
+        onChangeText={(text) => setValue({ ...value, password: text })}
+        secureTextEntry={true}
+      />
 
+      {loading && <ActivityIndicator size={16} />}
+      {!loading && (
         <Button title="Entrar" buttonStyle={styles.control} onPress={signIn} />
+      )}
 
-        <Button
-          title="Cadastre-se"
-          buttonStyle={styles.control}
-          onPress={() => navigation.navigate('cadastre-se')}
-        />
-        {!!value.error && (
-          <View style={styles.error}>
-            <Text>{value.error}</Text>
-          </View>
-        )}
-      </View>
-    </SafeAreaView>
+      <Button
+        title="Cadastre-se"
+        buttonStyle={styles.control}
+        onPress={() => navigation.navigate('cadastre-se')}
+      />
+      {!!value.error && (
+        <View style={styles.error}>
+          <Text>{value.error}</Text>
+        </View>
+      )}
+    </View>
   );
 };
 

@@ -18,7 +18,6 @@ import conexao from '../assets/conexao.png';
 import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
-import { signOut, getAuth } from 'firebase/auth';
 
 const LogoWrap = styled.View`
   align-items: center;
@@ -35,7 +34,6 @@ const ImageWrap = styled.View`
 `;
 
 const MainScreen = ({ navigation }) => {
-  const auth = getAuth();
   return (
     <SafeAreaView style={styles.container}>
       <FadeCarousel
@@ -76,19 +74,16 @@ const MainScreen = ({ navigation }) => {
         stillDuration={2000}
         start={true}
       />
-
       <View style={styles.innerContainer}>
-        <View style={styles.textWrap}>
-          <Text style={styles.text}>
-            Realização da Secretaria Municipal de Cultura de São Paulo via
-            PROMAC
-          </Text>
-        </View>
+        <StatusBar barStyle={'light-content'} />
 
         <LogoWrap style={styles.logoWrap}>
           <Image source={spCultura} style={styles.logo} resizeMode="contain" />
         </LogoWrap>
-
+        <Text style={styles.text}>
+          Realização da Secretaria Municipal de Cultura de São Paulo via PROMAC
+        </Text>
+        <Text style={styles.text}>Apresentam:</Text>
         <ImageWrap style={styles.logoConexaoWrap}>
           <Image
             source={conexao}
@@ -103,15 +98,7 @@ const MainScreen = ({ navigation }) => {
         >
           <Text style={styles.buttonText}>Conheça SAMPA</Text>
         </TouchableHighlight>
-        <TouchableHighlight
-          style={styles.button}
-          onPress={() => signOut(auth)}
-          underlayColor={'rgba(255,255,255,.25)'}
-        >
-          <Text style={styles.buttonText}>SAIR</Text>
-        </TouchableHighlight>
       </View>
-      <StatusBar style="light" />
     </SafeAreaView>
   );
 };
@@ -128,11 +115,10 @@ const styles = StyleSheet.create({
   button: {
     height: 50,
     margin: 40,
-    borderColor: 'rgba(255,255,255,0.5)',
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderColor: '#fff',
     borderWidth: 1,
     borderStyle: 'solid',
-    borderRadius: 25,
+    borderRadius: 5,
     color: '#fff',
     padding: 10,
     alignItems: 'center',
@@ -143,28 +129,22 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   text: {
-    fontSize: 14,
-    marginLeft: 20,
-    marginRight: 20,
+    fontSize: 20,
+    marginLeft: 60,
+    marginRight: 60,
+    marginBottom: 10,
     color: 'rgba(255,255,255,0.75)',
     textAlign: 'center',
   },
-  textWrap: {
-    height: 90,
-    marginTop: '0%',
-    paddingTop: '10%',
-    width: '100%',
-    backgroundColor: 'rgba(29,50,112,0.9)',
-    zIndex: 10,
-    justifyContent: 'center',
-  },
   innerContainer: {
     position: 'absolute',
+    borderWidth: 2,
     bottom: 0,
     top: 0,
     left: 0,
     right: 0,
     backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'space-between',
   },
   container: {
     alignItems: 'center',
@@ -194,8 +174,8 @@ const styles = StyleSheet.create({
     height: 100,
   },
   logoConexaoWrap: {
-    width: '100%',
-    height: 50,
+    width: '90%',
+    height: 100,
   },
   logoConexao: {
     width: '100%',

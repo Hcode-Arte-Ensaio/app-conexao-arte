@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  DrawerContentScrollView,
-  DrawerItem,
-  DrawerNavigationProp,
-} from '@react-navigation/drawer';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Image, StyleSheet, TouchableHighlight } from 'react-native';
 import logo from '../../assets/conexao-cor.png';
 import { View } from 'react-native';
