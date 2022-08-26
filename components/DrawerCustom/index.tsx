@@ -6,6 +6,12 @@ import { View } from 'react-native';
 import { Dimensions } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { getAuth, signOut } from 'firebase/auth';
+import styled from 'styled-components/native';
+
+const ImageWrap = styled.View`
+  width: 80%;
+  height: 300px;
+`;
 
 const DrawerCustom = (props) => {
   const { navigation } = props;
@@ -37,7 +43,9 @@ const DrawerCustom = (props) => {
             labelStyle={styles.item}
           />
         </View>
-        <Image source={logo} style={styles.logo} resizeMode="cover" />
+        <ImageWrap>
+          <Image source={logo} style={styles.logo} resizeMode="contain" />
+        </ImageWrap>
       </View>
     </DrawerContentScrollView>
   );

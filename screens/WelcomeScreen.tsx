@@ -1,10 +1,25 @@
 import React, { useCallback, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { InputField } from '../components/InputField';
+import { Button } from '../components/Button';
 import styled from 'styled-components/native';
+import logo from '../assets/conexao-cor.png';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const Input = styled.TextInput``;
-const Button = styled.TouchableOpacity``;
+const Wrap = styled.View`
+  flex: 1;
+  padding: 20px;
+`;
+
+const LogoWrap = styled.View`
+  align-items: center;
+`;
+
+const Logo = styled.Image`
+  width: 200px;
+  height: 200px;
+`;
 
 const auth = getAuth();
 
@@ -39,38 +54,49 @@ const WelcomeScreen = ({ navigation }) => {
   }, [value]);
 
   return (
-    <View style={styles.controls}>
-      <Input
-        placeholder="Email"
-        containerStyle={styles.control}
-        value={value.email}
-        onChangeText={(text) => setValue({ ...value, email: text })}
-      />
+    <Wrap>
+      <LogoWrap>
+        <Logo source={logo} resizeMode="contain" />
+      </LogoWrap>
 
-      <Input
-        placeholder="Password"
-        containerStyle={styles.control}
-        value={value.password}
-        onChangeText={(text) => setValue({ ...value, password: text })}
-        secureTextEntry={true}
-      />
+      <KeyboardAwareScrollView>
+        <InputField
+          label="Email"
+          inputProps={{
+            value: value.email,
+            onChangeText: (text) => setValue({ ...value, email: text }),
+            autoComplete: 'email',
+            keyboardType: 'email-address',
+          }}
+        />
 
-      {loading && <ActivityIndicator size={16} />}
-      {!loading && (
-        <Button title="Entrar" buttonStyle={styles.control} onPress={signIn} />
-      )}
+        <InputField
+          label="Password"
+          style={{ marginTop: 20, marginBottom: 20 }}
+          inputProps={{
+            value: value.password,
+            onChangeText: (text) => setValue({ ...value, password: text }),
+            secureTextEntry: true,
+          }}
+        />
 
-      <Button
-        title="Cadastre-se"
-        buttonStyle={styles.control}
-        onPress={() => navigation.navigate('cadastre-se')}
-      />
-      {!!value.error && (
-        <View style={styles.error}>
-          <Text>{value.error}</Text>
-        </View>
-      )}
-    </View>
+        <Button onPress={signIn} disabled={loading} loading={loading}>
+          Entrar
+        </Button>
+
+        <Button
+          onPress={() => navigation.navigate('cadastre-se')}
+          style={{ marginTop: 20 }}
+        >
+          Cadastre-se
+        </Button>
+        {!!value.error && (
+          <View style={styles.error}>
+            <Text>{value.error}</Text>
+          </View>
+        )}
+      </KeyboardAwareScrollView>
+    </Wrap>
   );
 };
 
@@ -83,12 +109,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-
-  controls: {
-    width: '90%',
-    marginTop: '50%',
-    flex: 1,
   },
 
   control: {
