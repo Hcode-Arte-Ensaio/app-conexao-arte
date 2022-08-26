@@ -22,6 +22,8 @@ export default {
       bundleIdentifier: 'com.arteensaio.sp.conexaoarte',
     },
     android: {
+      package: 'com.arteensaio.sp.conexaoarte',
+      versionCode: 1,
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#FFFFFF',

@@ -17,7 +17,6 @@ import spCultura from '../assets/sp-cultura.png';
 import conexao from '../assets/conexao.png';
 import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons';
 
 const LogoWrap = styled.View`
   align-items: center;
@@ -76,17 +75,20 @@ const MainScreen = ({ navigation }) => {
       />
       <View style={styles.innerContainer}>
         <StatusBar barStyle={'light-content'} />
-        
+
         <LogoWrap style={styles.logoWrap}>
-          <Image source={spCultura}  style={styles.logo}
-            resizeMode="contain" />
+          <Image source={spCultura} style={styles.logo} resizeMode="contain" />
         </LogoWrap>
         <Text style={styles.text}>
           Realização da Secretaria Municipal de Cultura de São Paulo via PROMAC
         </Text>
         <Text style={styles.text}>Apresentam:</Text>
-        <ImageWrap  style={styles.logoConexaoWrap}>
-          <Image source={conexao} style={styles.logoConexao} resizeMode="contain" />
+        <ImageWrap style={styles.logoConexaoWrap}>
+          <Image
+            source={conexao}
+            style={styles.logoConexao}
+            resizeMode="contain"
+          />
         </ImageWrap>
         <TouchableHighlight
           style={styles.button}
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     position: 'absolute',
-    borderWidth:2,
+    borderWidth: 2,
     bottom: 0,
     top: 0,
     left: 0,
@@ -160,24 +162,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  logo:{
+  logo: {
     width: '100%',
-    margin:0,
+    margin: 0,
     height: 100,
     alignItems: 'flex-start',
   },
-  logoWrap:{
+  logoWrap: {
     width: '90%',
     height: 100,
   },
-  logoConexaoWrap:{
+  logoConexaoWrap: {
     width: '90%',
     height: 100,
   },
-  logoConexao:{
+  logoConexao: {
     width: '100%',
     height: 90,
-  }
+  },
 });
 
 export default MainScreen;
