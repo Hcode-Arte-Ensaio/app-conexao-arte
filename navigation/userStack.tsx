@@ -9,6 +9,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 import DrawerCustom from '../components/DrawerCustom';
 import { PlacePhotoScreen } from '../screens/PlacePhotoScreen';
+import SignOutScreen from '../screens/SignOutScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -57,6 +58,13 @@ export default function App() {
               name="PlacePhoto"
               component={PlacePhotoScreen}
               options={{ presentation: 'modal', headerShown: false }}
+            />
+              <Drawer.Screen
+              name="sair"
+              component={SignOutScreen}
+              options={{
+                headerShown: false,
+              }}
             />
           </Drawer.Navigator>
         </NavigationContainer>

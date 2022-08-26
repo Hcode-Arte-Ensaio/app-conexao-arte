@@ -18,6 +18,8 @@ import conexao from '../assets/conexao.png';
 import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { signOut, getAuth } from 'firebase/auth';
+
 
 const LogoWrap = styled.View`
   align-items: center;
@@ -34,6 +36,7 @@ const ImageWrap = styled.View`
 `;
 
 const MainScreen = ({ navigation }) => {
+  const auth = getAuth();
   return (
     <SafeAreaView style={styles.container}>
       <FadeCarousel
@@ -97,6 +100,13 @@ const MainScreen = ({ navigation }) => {
           underlayColor={'rgba(255,255,255,.25)'}
         >
           <Text style={styles.buttonText}>Conheça SAMPA</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => signOut(auth)} 
+          underlayColor={'rgba(255,255,255,.25)'}
+        >
+          <Text style={styles.buttonText}>SAIR</Text>
         </TouchableHighlight>
       </View>
         <StatusBar style='light' />

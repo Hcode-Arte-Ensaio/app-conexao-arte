@@ -108,6 +108,7 @@ export const PlacesContextProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
+    
     if (filter) {
       setPlaces((items) => items.filter(filterFunction));
       setPlacesFavorites((items) => items.filter(filterFunction));

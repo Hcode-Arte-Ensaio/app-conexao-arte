@@ -10,14 +10,30 @@ const RegisterScreen = ({ navigation}) => {
 const [value, setValue] = React.useState({
     email: '',
     password: '',
+    cpassword: '',
     error: ''
   })
 
  async  function signUp() {
-    if (value.email === '' || value.password === '') {
+      if (value.email === '' || value.password === '') {
       setValue({
         ...value,
         error: 'Email e Senha são obrigatórios'
+      })
+      return;
+    }
+
+    if (value.cpassword === '') {
+      setValue({
+        ...value,
+        error: 'Confirme a senha!'
+      })
+      return;
+    }
+    if (value.cpassword !== value.password) {
+      setValue({
+        ...value,
+        error: 'Senhas não conferem!'
       })
       return;
     }
@@ -26,6 +42,9 @@ try {
     await createUserWithEmailAndPassword(auth, value.email, value.password);
     navigation.navigate('conexao-arte');
   } catch (error:any) {
+    if(error.code == 'auth/email-already-in-use'){
+      error.message = 'E-mail já cadastrado!';
+    }
     setValue({
       ...value,
       error: error.message,
@@ -37,7 +56,6 @@ try {
     <View style={styles.container}>
       <Text>Cadastre-se</Text>
 
-      {!!value.error && <View style={styles.error}><Text>{value.error}</Text></View>}
 
       <View style={styles.controls}>
         <Input
@@ -62,8 +80,20 @@ try {
             size={16}
           />}
         />
+        <Input
+          placeholder='Confirme a Senha'
+          containerStyle={styles.control}
+          value={value.cpassword}
+          onChangeText={(text) => setValue({ ...value, cpassword: text })}
+          secureTextEntry={true}
+          leftIcon={<Icon
+            name='key'
+            size={16}
+          />}
+        />
 
         <Button title="Cadastrar" buttonStyle={styles.control} onPress={signUp} />
+        {!!value.error && <View style={styles.error}><Text>{value.error}</Text></View>}
       </View>
     </View>
   );
@@ -91,10 +121,12 @@ const styles = StyleSheet.create({
   },
 
   error: {
+    width: '100%',
+    alignItems: 'center',
     marginTop: 10,
     padding: 10,
     color: '#fff',
-    backgroundColor: '#D54826FF',
-  }
+    backgroundColor: '#cde9fe',
+  },
 });
 export default RegisterScreen;

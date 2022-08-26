@@ -65,61 +65,9 @@ const WelcomeScreen = ({ navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-      <FadeCarousel
-        elements={[
-          <Image
-            source={Image1}
-            style={styles.imageScroll}
-            resizeMethod="resize"
-            resizeMode="cover"
-          />,
-          <Image
-            source={Image2}
-            style={styles.imageScroll}
-            resizeMethod="resize"
-            resizeMode="cover"
-          />,
-          <Image
-            source={Image3}
-            style={styles.imageScroll}
-            resizeMethod="resize"
-            resizeMode="cover"
-          />,
-          <Image
-            source={Image4}
-            style={styles.imageScroll}
-            resizeMethod="resize"
-            resizeMode="cover"
-          />,
-          <Image
-            source={Image5}
-            style={styles.imageScroll}
-            resizeMethod="resize"
-            resizeMode="cover"
-          />,
-        ]}
-        containerStyle={styles.carouselContainer}
-        fadeDuration={2000}
-        stillDuration={2000}
-        start={true}
-      />
-      <View style={styles.innerContainer}>
-        <StatusBar barStyle={'light-content'} />
-        
-        <LogoWrap style={styles.logoWrap}>
-          <Image source={spCultura}  style={styles.logo}
-            resizeMode="contain" />
-        </LogoWrap>
-        <Text style={styles.text}>
-          Realização da Secretaria Municipal de Cultura de São Paulo via PROMAC
-        </Text>
-        <Text style={styles.text}>Apresentam:</Text>
-        <ImageWrap  style={styles.logoConexaoWrap}>
-          <Image source={conexao} style={styles.logoConexao} resizeMode="contain" />
-        </ImageWrap>
-      </View>
-         {!!value.error && <View style={styles.error}><Text>{value.error}</Text></View>}
+
+
+       
 
       <View style={styles.controls}>
         <Input
@@ -145,13 +93,12 @@ const WelcomeScreen = ({ navigation}) => {
           />}
         />
 
-        <Button title="Sign in" buttonStyle={styles.control} onPress={signIn} />
-        <View style={styles.buttons}>
+        <Button title="Entrar" buttonStyle={styles.control} onPress={signIn} />
+
         
-        <Button title="Cadastre-se" type="outline" buttonStyle={styles.button} onPress={() => navigation.navigate('cadastre-se')} />
-        </View>
+        <Button title="Cadastre-se" buttonStyle={styles.control} onPress={() => navigation.navigate('cadastre-se')} />
+          {!!value.error && <View style={styles.error}><Text>{value.error}</Text></View>}
       </View>
-      </ScrollView>
     </SafeAreaView>
     
 
@@ -163,6 +110,7 @@ const WelcomeScreen = ({ navigation}) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: '100%',
     flex: 1,
     paddingTop: 20,
     backgroundColor: '#fff',
@@ -172,7 +120,7 @@ const styles = StyleSheet.create({
 
   controls: {
     width: '90%',
-    marginTop:'10%',
+    marginTop:'50%',
     flex: 1,
   },
 
@@ -181,10 +129,12 @@ const styles = StyleSheet.create({
   },
 
   error: {
+    width: '100%',
+    alignItems: 'center',
     marginTop: 10,
     padding: 10,
     color: '#fff',
-    backgroundColor: '#D54826FF',
+    backgroundColor: '#cde9fe',
   },
    menu: {
     position: 'absolute',

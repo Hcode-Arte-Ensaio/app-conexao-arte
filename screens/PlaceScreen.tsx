@@ -248,7 +248,7 @@ const PlaceScreen = ({
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
+        alert('Desculpe, precisamos de permissão para este recurso!');
       }
     }
   };
