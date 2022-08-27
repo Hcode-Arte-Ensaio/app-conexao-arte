@@ -23,7 +23,7 @@ export default {
     },
     android: {
       package: 'com.arteensaio.sp.conexaoarte',
-      versionCode: 3,
+      versionCode: 4,
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
