@@ -23,7 +23,7 @@ export default {
     },
     android: {
       package: 'com.arteensaio.sp.conexaoarte',
-      versionCode: 2,
+      versionCode: 3,
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
@@ -39,6 +39,9 @@ export default {
       firebaseStorageBucket: process.env.FIREBASE_STORAGE_BUCKET,
       firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppId: process.env.FIREBASE_APP_ID,
+      eas: {
+        projectId: '791687e1-d48f-409d-9c65-1fb5aa2452dc',
+      },
     },
     plugins: [
       [

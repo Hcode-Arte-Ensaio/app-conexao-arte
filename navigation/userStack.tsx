@@ -6,6 +6,7 @@ import { PlacesContextProvider } from '../context/PlacesContext';
 import MainScreen from '../screens/MainScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerCustom from '../components/DrawerCustom';
+import BlankScreen from '../screens/BlankScreen';
 
 const Drawer = createDrawerNavigator();
 

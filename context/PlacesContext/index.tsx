@@ -1,70 +1,53 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { IPlace } from '../../interfaces/IPlace';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { places as database } from '../../data/index';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getFirestore,
+  onSnapshot,
+  query,
+  setDoc,
+} from 'firebase/firestore';
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 
 type PropsPlacesContext = {
   filter: string;
-  setFilter: (value: string) => void;
   places: IPlace[];
   placesFavorites: IPlace[];
+  placesFiltred: IPlace[];
+  categoryId: number;
+  setFilter: (value: string) => void;
   addFavorites: (place: IPlace) => void;
   removeFavorites: (place: IPlace) => void;
-  setData: (places: IPlace[]) => void;
   toggleFavorites: (place: IPlace) => void;
-  categoryId: number;
   setCategoryId: (value: number) => void;
 };
 
 const DEFAULT_VALUE = {
   filter: '',
-  setFilter: () => {},
   places: [],
   placesFavorites: [],
+  placesFiltred: [],
+  categoryId: 0,
+  setFilter: () => {},
   addFavorites: () => {},
   removeFavorites: () => {},
-  setData: () => {},
   toggleFavorites: () => {},
-  categoryId: 0,
   setCategoryId: () => {},
 };
 
 const PlacesContext = React.createContext<PropsPlacesContext>(DEFAULT_VALUE);
 
 export const PlacesContextProvider = ({ children }) => {
+  const db = getFirestore();
+  const auth = getAuth();
   const [filter, setFilter] = useState('');
   const [categoryId, setCategoryId] = useState(0);
-  const [allPlaces, setAllPlaces] = useState<IPlace[]>([]);
   const [places, setPlaces] = useState<IPlace[]>([]);
+  const [placesFiltred, setPlacesFiltred] = useState<IPlace[]>([]);
   const [placesFavorites, setPlacesFavorites] = useState<IPlace[]>([]);
-
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('places');
-
-      if (value !== null) {
-        const places = JSON.parse(value) as IPlace[];
-        if (places.length) {
-          setAllPlaces(places);
-        }
-
-        return true;
-      } else {
-        throw new Error('Empty JSON');
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const setData = async (items: IPlace[]) => {
-    try {
-      await AsyncStorage.setItem('places', JSON.stringify(items));
-    } catch (e) {
-      console.error(e);
-    }
-    return true;
-  };
+  const [user, setUser] = useState<null | User>(null);
 
   const filterFunction = useCallback(
     (item) => {
@@ -76,68 +59,76 @@ export const PlacesContextProvider = ({ children }) => {
     [filter]
   );
 
-  const initAllPlaces = useCallback(() => {
-    setPlaces(allPlaces);
-    setPlacesFavorites(allPlaces.filter((item) => item.favorite));
-  }, [allPlaces]);
-
   const toggleFavorites = (place: IPlace) => {
-    if (place.favorite) {
+    if (placesFavorites.map((p) => p.id).includes(place.id)) {
       removeFavorites(place);
     } else {
       addFavorites(place);
     }
   };
 
-  const addFavorites = (place: IPlace) => {
-    const newPlaces = allPlaces.map((i) =>
-      i.id === place.id ? { ...i, favorite: true } : i
-    );
+  const addFavorites = useCallback(
+    async (place: IPlace) => {
+      if (user) {
+        await setDoc(
+          doc(db, 'users', user.uid, 'favorites', String(place.id)),
+          place
+        );
+      }
+    },
+    [user]
+  );
 
-    setAllPlaces([...newPlaces]);
-    setData([...newPlaces]);
-  };
-
-  const removeFavorites = (place: IPlace) => {
-    const newPlaces = allPlaces.map((i) =>
-      i.id === place.id ? { ...i, favorite: false } : i
-    );
-
-    setAllPlaces(newPlaces);
-    setData(newPlaces);
-  };
+  const removeFavorites = useCallback(
+    async (place: IPlace) => {
+      if (user) {
+        await deleteDoc(
+          doc(db, 'users', user.uid, 'favorites', String(place.id))
+        );
+      }
+    },
+    [user]
+  );
 
   useEffect(() => {
     if (filter) {
-      setPlaces((items) => items.filter(filterFunction));
-      setPlacesFavorites((items) => items.filter(filterFunction));
+      setPlacesFiltred(places.filter(filterFunction));
     } else {
-      initAllPlaces();
+      setPlacesFiltred([...places]);
     }
   }, [filter]);
 
-  useEffect(initAllPlaces, [allPlaces]);
-
   useEffect(() => {
-    if (categoryId === 0) {
-      initAllPlaces();
-    } else {
-      setPlaces(
-        allPlaces.filter((item) => item.categoryId.includes(categoryId))
+    if (user) {
+      const unsubFavorites = onSnapshot(
+        query(collection(db, 'users', user.uid, 'favorites')),
+        (querySnapshot) => {
+          const database: any[] = [];
+          querySnapshot.forEach((doc) => database.push(doc.data()));
+          setPlacesFavorites(database);
+        }
       );
-      setPlacesFavorites(
-        allPlaces
-          .filter((item) => item.favorite)
-          .filter((item) => item.categoryId.includes(categoryId))
-      );
+      return () => {
+        unsubFavorites();
+      };
     }
-  }, [categoryId]);
+  }, [user]);
 
   useEffect(() => {
-    setData(database)
-      .then(() => getData())
-      .then(() => {})
-      .catch(console.error);
+    onAuthStateChanged(auth, setUser);
+
+    const unsubPlaces = onSnapshot(
+      query(collection(db, 'places')),
+      (querySnapshot) => {
+        const database: any[] = [];
+        querySnapshot.forEach((doc) => database.push(doc.data()));
+        setPlaces(database);
+      }
+    );
+
+    return () => {
+      unsubPlaces();
+    };
   }, []);
 
   return (
@@ -149,7 +140,7 @@ export const PlacesContextProvider = ({ children }) => {
         placesFavorites,
         addFavorites,
         removeFavorites,
-        setData,
+        placesFiltred,
         toggleFavorites,
         categoryId,
         setCategoryId,

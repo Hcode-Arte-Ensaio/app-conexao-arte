@@ -150,11 +150,12 @@ const PlaceScreen = ({
 }) => {
   const auth = getAuth();
   const db = getFirestore();
+  const { toggleFavorites, placesFavorites } = usePlaces();
   const [user, setUser] = useState<User | null>(null);
   const [uploading, setUploading] = useState(false);
   const [modal, setModal] = useState(false);
   const [place, setPlace] = useState(route.params);
-  const { toggleFavorites } = usePlaces();
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const img = placeImages.find((item) => item.id === place.id)
     ?.image as ImageSourcePropType;
@@ -290,6 +291,16 @@ const PlaceScreen = ({
     });
   }, [route]);
 
+  useEffect(() => {
+    if (place && placesFavorites.length > 0) {
+      setIsFavorite(
+        placesFavorites.map((place) => place.id).includes(place.id)
+      );
+    } else {
+      setIsFavorite(false);
+    }
+  }, [placesFavorites, place]);
+
   return (
     <Wrap>
       <WrapScrollView>
@@ -302,11 +313,11 @@ const PlaceScreen = ({
             </Button>
             <Button
               onPress={() => {
+                setIsFavorite(!isFavorite);
                 toggleFavorites(place);
-                place.favorite = !place.favorite;
               }}
             >
-              {!place.favorite ? (
+              {!isFavorite ? (
                 <MaterialIcons name="favorite-border" size={24} color="black" />
               ) : (
                 <MaterialIcons name="favorite" size={24} color="red" />

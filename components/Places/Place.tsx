@@ -5,7 +5,7 @@ import {
   ImageSourcePropType,
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import placeImages from '../../consts/placeImages';
@@ -16,16 +16,26 @@ import PlaceIcon from '../Icons/PlaceIcon';
 
 const Place = ({ place }: { place: IPlace }) => {
   const [data, setData] = useState(place);
-  const { toggleFavorites } = usePlaces();
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { toggleFavorites, placesFavorites } = usePlaces();
   const navigation = useNavigation();
 
   const img = placeImages.find((item) => item.id === place.id)
     ?.image as ImageSourcePropType;
 
   useEffect(() => setData(place), [place]);
+  useEffect(() => {
+    if (place && placesFavorites.length > 0) {
+      setIsFavorite(
+        placesFavorites.map((place) => place.id).includes(place.id)
+      );
+    } else {
+      setIsFavorite(false);
+    }
+  }, [placesFavorites, place]);
 
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       style={styles.container}
       onPress={() => navigation.navigate('Place' as never, data as never)}
     >
@@ -35,23 +45,19 @@ const Place = ({ place }: { place: IPlace }) => {
           style={styles.background}
           imageStyle={styles.backgroundBorder}
         >
-          <TouchableHighlight
+          <TouchableOpacity
             style={styles.favoriteContainer}
-            underlayColor={'#eee'}
             onPress={() => {
-              setData((data) => ({
-                ...data,
-                favorite: !data.favorite,
-              }));
+              setIsFavorite(!isFavorite);
               toggleFavorites(data);
             }}
           >
             <FavoriteIcon
               width="24"
               height="24"
-              color={data.favorite ? '#ff0000' : '#6C6C6C'}
+              color={isFavorite ? '#ff0000' : '#6C6C6C'}
             />
-          </TouchableHighlight>
+          </TouchableOpacity>
         </ImageBackground>
         <View style={styles.descriptionContainer}>
           <View>
@@ -63,7 +69,7 @@ const Place = ({ place }: { place: IPlace }) => {
           </View>
         </View>
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 

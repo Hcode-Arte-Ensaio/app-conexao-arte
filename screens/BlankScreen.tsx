@@ -11,7 +11,7 @@ const Wrap = styled.View`
 const BlankScreen = () => {
   return (
     <Wrap>
-      <Text>Blank Screen</Text>
+      <Text>Blank</Text>
     </Wrap>
   );
 };

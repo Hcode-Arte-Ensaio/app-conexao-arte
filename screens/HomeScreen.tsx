@@ -6,36 +6,39 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import TitleHome from '../components/Home/TitleHome';
 import Places from '../components/Places/Places';
 import Search from '../components/Search';
 import placeImages from '../consts/placeImages';
 import { usePlaces } from '../context/PlacesContext';
 import { IPlace } from '../interfaces/IPlace';
+import styled from 'styled-components/native';
+
+const Wrap = styled.View`
+  padding-bottom: 20px;
+`;
 
 const getRandom = (min, max) => {
   return parseInt(Math.random() * (max - min) + min);
 };
 const HomeScreen = ({ navigation }) => {
-  const { places, placesFavorites } = usePlaces();
+  const { places, placesFavorites, filter, categoryId } = usePlaces();
   const [placeLocal, setPlaceLocal] = useState<IPlace>();
   const [destak, setDestak] = useState<Number>(0);
+  const img = placeImages.find((item) => Number(item.id) === Number(destak))
+    ?.image as ImageSourcePropType;
 
   useEffect(() => {
     setDestak(getRandom(2, 10));
     setPlaceLocal(places.find((item) => Number(item.id) === Number(destak)));
   }, [destak]);
-  const img = placeImages.find((item) => Number(item.id) === Number(destak))
-    ?.image as ImageSourcePropType;
-
-  const data = places.find((item) => Number(item.id) === Number(destak));
 
   return (
     <ScrollView>
-      <View style={styles.container}>
+      <Wrap style={styles.container}>
         <View style={styles.header}></View>
         <View style={styles.title}>
           <TitleHome title="Descubra" subtitle="lugares incríveis" />
@@ -44,12 +47,12 @@ const HomeScreen = ({ navigation }) => {
           <Search />
         </View>
 
-        {destak ? (
+        {destak && filter.length === 0 ? (
           <View style={styles.destakPlaces}>
-            <TouchableHighlight
+            <TouchableOpacity
               style={styles.container}
               onPress={() =>
-                navigation.navigate('Place' as never, data as never)
+                navigation.navigate('Place' as never, placeLocal as never)
               }
             >
               <View style={styles.destakPlacesInside}>
@@ -61,18 +64,48 @@ const HomeScreen = ({ navigation }) => {
                 />
                 {destak ? <Text style={h1}>{placeLocal?.name}</Text> : null}
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         ) : null}
 
         <View style={styles.places}>
-          <Places title="Locais populares" data={places} />
+          <Places
+            title="Locais populares"
+            data={places
+              .filter((place) =>
+                categoryId > 0 ? place.categoryId.includes(categoryId) : true
+              )
+              .filter((place) => {
+                return filter.length > 0
+                  ? place.name.toLowerCase().includes(filter.toLowerCase()) ||
+                      place.description
+                        .toLowerCase()
+                        .includes(filter.toLowerCase())
+                  : true;
+              })}
+          />
         </View>
-        <View style={styles.favorites}>
-          <Places title="Meus locais favoritos" data={placesFavorites} />
-        </View>
+        {placesFavorites.length > 0 && (
+          <View style={styles.favorites}>
+            <Places
+              title="Meus locais favoritos"
+              data={placesFavorites
+                .filter((place) =>
+                  categoryId > 0 ? place.categoryId.includes(categoryId) : true
+                )
+                .filter((place) => {
+                  return filter.length > 0
+                    ? place.name.toLowerCase().includes(filter.toLowerCase()) ||
+                        place.description
+                          .toLowerCase()
+                          .includes(filter.toLowerCase())
+                    : true;
+                })}
+            />
+          </View>
+        )}
         <StatusBar style="auto" />
-      </View>
+      </Wrap>
     </ScrollView>
   );
 };
