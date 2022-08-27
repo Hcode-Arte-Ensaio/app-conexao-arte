@@ -1,8 +1,10 @@
 import 'react-native-gesture-handler';
-import React from 'react';
 import './config/firebase';
+import React from 'react';
 import RootNavigation from './navigation';
 
-export default function App() {
+const App = () => {
   return <RootNavigation />;
-}
+};
+
+export default App;
