@@ -21,7 +21,9 @@
     "dotenv": "^16.0.1",
     "expo": "^46.0.0",
     "expo-constants": "~13.2.3",
+    "expo-dev-client": "^1.2.1",
     "expo-image-picker": "~13.3.1",
+    "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "~1.4.0",
     "firebase": "^9.9.1",
     "firebaseui": "^6.0.1",
@@ -38,8 +40,7 @@
     "react-native-uuid": "^2.0.1",
     "react-native-web": "~0.18.7",
     "rn-fade-carousel": "^1.0.0",
-    "styled-components": "^5.3.5",
-    "expo-splash-screen": "~0.16.2"
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",

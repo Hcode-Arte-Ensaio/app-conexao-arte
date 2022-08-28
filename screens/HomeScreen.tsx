@@ -27,14 +27,11 @@ const getRandom = (min, max) => {
 const HomeScreen = ({ navigation }) => {
   const { places, placesFavorites, filter, categoryId } = usePlaces();
   const [placeLocal, setPlaceLocal] = useState<IPlace>();
-  const [destak, setDestak] = useState<Number>(0);
-  const img = placeImages.find((item) => Number(item.id) === Number(destak))
-    ?.image as ImageSourcePropType;
 
   useEffect(() => {
-    setDestak(getRandom(2, 10));
-    setPlaceLocal(places.find((item) => Number(item.id) === Number(destak)));
-  }, [destak]);
+    const random = Math.floor(Math.random() * places.length);
+    setPlaceLocal(places[random]);
+  }, []);
 
   return (
     <ScrollView>
@@ -47,22 +44,24 @@ const HomeScreen = ({ navigation }) => {
           <Search />
         </View>
 
-        {destak && filter.length === 0 ? (
+        {placeLocal && filter.length === 0 ? (
           <View style={styles.destakPlaces}>
             <TouchableOpacity
               style={styles.container}
-              onPress={() =>
-                navigation.navigate('Place' as never, placeLocal as never)
-              }
+              onPress={() => {
+                if (placeLocal) {
+                  navigation.navigate('Place', placeLocal);
+                }
+              }}
             >
               <View style={styles.destakPlacesInside}>
                 <Image
-                  source={img}
+                  source={placeLocal.image as ImageSourcePropType}
                   style={styles.destak}
                   resizeMethod="resize"
                   resizeMode="cover"
                 />
-                {destak ? <Text style={h1}>{placeLocal?.name}</Text> : null}
+                {placeLocal ? <Text style={h1}>{placeLocal?.name}</Text> : null}
               </View>
             </TouchableOpacity>
           </View>
