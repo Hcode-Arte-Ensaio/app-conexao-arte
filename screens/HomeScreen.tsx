@@ -12,26 +12,25 @@ import {
 import TitleHome from '../components/Home/TitleHome';
 import Places from '../components/Places/Places';
 import Search from '../components/Search';
-import placeImages from '../consts/placeImages';
 import { usePlaces } from '../context/PlacesContext';
 import { IPlace } from '../interfaces/IPlace';
 import styled from 'styled-components/native';
+import placeImages from '../consts/placeImages';
 
 const Wrap = styled.View`
   padding-bottom: 20px;
 `;
 
-const getRandom = (min, max) => {
-  return parseInt(Math.random() * (max - min) + min);
-};
 const HomeScreen = ({ navigation }) => {
   const { places, placesFavorites, filter, categoryId } = usePlaces();
   const [placeLocal, setPlaceLocal] = useState<IPlace>();
 
   useEffect(() => {
-    const random = Math.floor(Math.random() * places.length);
-    setPlaceLocal(places[random]);
-  }, []);
+    if (places.length > 0) {
+      const random = Math.floor(Math.random() * places.length);
+      setPlaceLocal(places[random]);
+    }
+  }, [places]);
 
   return (
     <ScrollView>
@@ -44,7 +43,7 @@ const HomeScreen = ({ navigation }) => {
           <Search />
         </View>
 
-        {placeLocal && filter.length === 0 ? (
+        {placeLocal && filter.length === 0 && (
           <View style={styles.destakPlaces}>
             <TouchableOpacity
               style={styles.container}
@@ -56,7 +55,10 @@ const HomeScreen = ({ navigation }) => {
             >
               <View style={styles.destakPlacesInside}>
                 <Image
-                  source={placeLocal.image as ImageSourcePropType}
+                  source={
+                    placeImages.find((item) => item.id === placeLocal.id)
+                      ?.image as ImageSourcePropType
+                  }
                   style={styles.destak}
                   resizeMethod="resize"
                   resizeMode="cover"
@@ -65,11 +67,11 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           </View>
-        ) : null}
+        )}
 
         <View style={styles.places}>
           <Places
-            title="Locais populares"
+            title="Locais populares 2"
             data={places
               .filter((place) =>
                 categoryId > 0 ? place.categoryId.includes(categoryId) : true
