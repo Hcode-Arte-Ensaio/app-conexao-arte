@@ -71,7 +71,7 @@ const HomeScreen = ({ navigation }) => {
 
         <View style={styles.places}>
           <Places
-            title="Locais populares 2"
+            title="Locais populares"
             data={places
               .filter((place) =>
                 categoryId > 0 ? place.categoryId.includes(categoryId) : true
