@@ -7,6 +7,7 @@ import MainScreen from '../screens/MainScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerCustom from '../components/DrawerCustom';
 import BlankScreen from '../screens/BlankScreen';
+import MinhaContaScreen from '../screens/MinhaContaScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -50,6 +51,7 @@ export default function App() {
               headerShown: false,
             }}
           />
+          <Drawer.Screen name="MinhaConta" component={MinhaContaScreen} />
         </Drawer.Navigator>
       </NavigationContainer>
     </PlacesContextProvider>

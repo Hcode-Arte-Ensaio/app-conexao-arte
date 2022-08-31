@@ -38,6 +38,11 @@ const DrawerCustom = (props) => {
             labelStyle={styles.item}
           />
           <DrawerItem
+            label="Minha Conta"
+            onPress={() => navigation.navigate('MinhaConta' as never)}
+            labelStyle={styles.item}
+          />
+          <DrawerItem
             label="Logout"
             onPress={() => signOut(getAuth())}
             labelStyle={styles.item}
