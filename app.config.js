@@ -3,7 +3,7 @@ export default {
     name: 'Conexão Arte - SP',
     owner: 'arte-ensaio',
     slug: 'conexao-arte-sp',
-    version: '4.0.0',
+    version: '5.0.0',
     orientation: 'portrait',
     icon: './assets/images/icon.png',
     splash: {
@@ -21,7 +21,7 @@ export default {
     },
     android: {
       package: 'com.arteensaio.sp.conexaoarte',
-      versionCode: 18,
+      versionCode: 19,
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
