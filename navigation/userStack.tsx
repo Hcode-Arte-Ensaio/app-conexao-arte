@@ -8,6 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerCustom from '../components/DrawerCustom';
 import BlankScreen from '../screens/BlankScreen';
 import MinhaContaScreen from '../screens/MinhaContaScreen';
+import { PlacePhotoScreen } from '../screens/PlacePhotoScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -47,6 +48,13 @@ export default function App() {
           <Drawer.Screen
             name="Place"
             component={PlaceScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Drawer.Screen
+            name="PlacePhoto"
+            component={PlacePhotoScreen}
             options={{
               headerShown: false,
             }}

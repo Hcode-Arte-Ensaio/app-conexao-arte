@@ -16,6 +16,7 @@ import { usePlaces } from '../context/PlacesContext';
 import { IPlace } from '../interfaces/IPlace';
 import styled from 'styled-components/native';
 import placeImages from '../consts/placeImages';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const Wrap = styled.View`
   padding-bottom: 20px;
@@ -35,9 +36,11 @@ const HomeScreen = ({ navigation }) => {
   return (
     <ScrollView>
       <Wrap style={styles.container}>
-        <View style={styles.header}></View>
         <View style={styles.title}>
           <TitleHome title="Descubra" subtitle="lugares incríveis" />
+          <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+            <MaterialIcons name="menu" size={24} color="black" />
+          </TouchableOpacity>
         </View>
         <View style={styles.search}>
           <Search />
@@ -79,9 +82,9 @@ const HomeScreen = ({ navigation }) => {
               .filter((place) => {
                 return filter.length > 0
                   ? place.name.toLowerCase().includes(filter.toLowerCase()) ||
-                      place.description
-                        .toLowerCase()
-                        .includes(filter.toLowerCase())
+                  place.description
+                    .toLowerCase()
+                    .includes(filter.toLowerCase())
                   : true;
               })}
           />
@@ -97,9 +100,9 @@ const HomeScreen = ({ navigation }) => {
                 .filter((place) => {
                   return filter.length > 0
                     ? place.name.toLowerCase().includes(filter.toLowerCase()) ||
-                        place.description
-                          .toLowerCase()
-                          .includes(filter.toLowerCase())
+                    place.description
+                      .toLowerCase()
+                      .includes(filter.toLowerCase())
                     : true;
                 })}
             />
@@ -112,10 +115,6 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    alignItems: 'flex-end',
-    width: '100%',
-  },
   menu: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -138,6 +137,9 @@ const styles = StyleSheet.create({
     minHeight: 100,
     paddingLeft: 30,
     paddingRight: 30,
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   titleDestak: {
     width: '100%',

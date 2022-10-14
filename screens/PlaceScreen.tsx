@@ -148,6 +148,7 @@ const PlaceScreen = ({
   };
   navigation: any;
 }) => {
+  const [status, requestPermission] = ImagePicker.useCameraPermissions();
   const auth = getAuth();
   const db = getFirestore();
   const { toggleFavorites, placesFavorites } = usePlaces();
@@ -161,57 +162,71 @@ const PlaceScreen = ({
     ?.image as ImageSourcePropType;
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    try {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
-    if (!result.cancelled) {
-      handleImagePicked(result);
+      if (!result.cancelled) {
+        handleImagePicked(result);
+      }
+    } catch (e) {
+      console.log('error', e);
     }
   };
 
   const pickCamera = async () => {
-    const result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    });
+    checkPermissions();
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      });
 
-    if (!result.cancelled) {
-      handleImagePicked(result);
+      if (!result.cancelled) {
+        handleImagePicked(result);
+      }
+    } catch (e) {
+      console.log('error', e)
     }
   };
 
   async function uploadImageAsync(uri) {
     // Why are we using XMLHttpRequest? See:
     // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-    const blob = await new Promise<Blob>((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-        resolve(xhr.response as Blob);
-      };
-      xhr.onerror = function (e) {
-        reject(new TypeError('Network request failed'));
-      };
-      xhr.responseType = 'blob';
-      xhr.open('GET', uri, true);
-      xhr.send(null);
-    });
+    try {
+      const blob = await new Promise<Blob>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response as Blob);
+        };
+        xhr.onerror = function (e) {
+          reject(new TypeError('Network request failed'));
+        };
+        xhr.responseType = 'blob';
+        xhr.open('GET', uri, true);
+        xhr.send(null);
+      });
 
-    const storage = getStorage();
-    const name = String(uuid.v4());
-    const fileRef = ref(storage, name);
-    const result = await uploadBytes(fileRef, blob);
+      const storage = getStorage();
+      const name = String(uuid.v4());
+      const fileRef = ref(storage, name);
+      await uploadBytes(fileRef, blob);
 
-    // We're done with the blob, close and release it
-    blob.close();
+      // We're done with the blob, close and release it
+      blob.close();
 
-    return await getDownloadURL(fileRef);
+      return await getDownloadURL(fileRef);
+    } catch (e) {
+      console.log('error', e)
+      return '';
+    }
   }
 
   const handleImagePicked = useCallback(
@@ -222,15 +237,17 @@ const PlaceScreen = ({
         if (!pickerResult.cancelled) {
           const uploadUrl = await uploadImageAsync(pickerResult.uri);
 
-          await addDoc(collection(db, 'places', String(place.id), 'photos'), {
-            url: uploadUrl,
-            created: Date.now(),
-            author: {
-              name: user?.displayName ?? '',
-              email: user?.email ?? '',
-              photoURL: user?.photoURL ?? '',
-            },
-          });
+          if (uploadUrl) {
+            await addDoc(collection(db, 'places', String(place.id), 'photos'), {
+              url: uploadUrl,
+              created: Date.now(),
+              author: {
+                name: user?.displayName ?? '',
+                email: user?.email ?? '',
+                photoURL: user?.photoURL ?? '',
+              },
+            });
+          }
         }
       } catch (e) {
         alert('Upload failed, sorry :(');
@@ -242,11 +259,17 @@ const PlaceScreen = ({
   );
 
   const checkPermissions = async () => {
+
     if (Platform.OS !== 'web') {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        alert('Desculpe, precisamos de permissão para este recurso!');
+      try {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (status !== 'granted') {
+          alert('Desculpe, precisamos de permissão para este recurso!');
+        }
+      } catch (e) {
+        console.log('error', e)
       }
     }
   };
@@ -264,8 +287,21 @@ const PlaceScreen = ({
   const [photos, setPhotos] = useState<Photo[]>([]);
 
   useEffect(() => {
+
+    setPhotos([]);
     setPlace(route.params);
-    checkPermissions();
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+  }, [route]);
+
+  useEffect(() => {
 
     const q = query(
       collection(db, 'places', String(place.id), 'photos'),
@@ -282,16 +318,6 @@ const PlaceScreen = ({
       setPhotos([...items]);
     });
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
-  }, [route]);
-
-  useEffect(() => {
     if (place && placesFavorites.length > 0) {
       setIsFavorite(
         placesFavorites.map((place) => place.id).includes(place.id)
@@ -377,9 +403,23 @@ const PlaceScreen = ({
       )}
       {!modal && (
         <AddPhotoButton
-          onPress={() => {
-            if (!uploading) {
+
+          onPress={async () => {
+
+            const result = await ImagePicker.requestCameraPermissionsAsync();
+
+            if (result.granted && !uploading) {
+
               setModal(true);
+            } else if (!result.granted && result.canAskAgain) {
+
+              try {
+                await requestPermission();
+              } catch (e) {
+                console.log(e);
+              }
+            } else {
+              console.log('nothing')
             }
           }}
         >
